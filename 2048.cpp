@@ -16,10 +16,10 @@ void CheckAppearNumber(){
 
 bool CheckUp(int i, int j){
     if ((boardcheck[i][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-3][j] == 1) ||
-    (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0) ||
-    (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-    (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-    (boardcheck[i-3][j] == 0 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0)) return true;
+        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0) ||
+        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
+        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
+        (boardcheck[i-3][j] == 0 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0)) return true;
     return false;
 }
 
@@ -30,25 +30,25 @@ bool CheckSimilarUp(int i, int j){
 }
 
 void PushAllElementOnTop(int i, int j){
-    if (i == 0) return;
+    if ((i == 0) && (CheckUp(3, j)))return;
     else
     {
         if (boardcheck[i][j] == 0) return PushAllElementOnTop(i-1, j);
         if (boardcheck[i][j] != 0){
-            for(int k = i; k >= 0; k--){
-                if (boardcheck[i-1][j] == 0){
-                    board[i-1][j] = board[i][j];
-                    boardcheck[i-1][j] = 1;
-                    board[i][j] = 0;
-                    boardcheck[i][j] = 0;
+            for(int k = i; k >= 1; k--){
+                if (boardcheck[k-1][j] == 0){
+                    board[k-1][j] = board[k][j];
+                    boardcheck[k-1][j] = 1;
+                    board[k][j] = 0;
+                    boardcheck[k][j] = 0;
                 }
                 else{
-                    PushAllElementOnTop(i-1, j);
-                    if (boardcheck[i-1][j] == 0){
-                        board[i-1][j] = board[i][j];
-                        boardcheck[i-1][j] = 1;
-                        board[i][j] = 0;
-                        boardcheck[i][j] = 0;
+                    PushAllElementOnTop(k-1, j);
+                    if (boardcheck[k-1][j] == 0){
+                        board[k-1][j] = board[k][j];
+                        boardcheck[k-1][j] = 1;
+                        board[k][j] = 0;
+                        boardcheck[k][j] = 0;
                     }
                 }
             }
