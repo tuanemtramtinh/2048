@@ -2,10 +2,10 @@
 
 using namespace std;
 
-int board[4][4] = {{2, 0, 2, 2},
-                   {0, 2, 0, 0},
-                   {0, 2, 2, 2},
-                   {0, 2, 0, 2}};
+int board[4][4] = {{0, 2, 0, 4},
+                   {2, 4, 0, 8},
+                   {0, 0, 2, 4},
+                   {2, 0, 4, 8}};
 int boardcheck[4][4];
 
 void CheckAppearNumber(){
@@ -90,8 +90,6 @@ int main() {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
             boardcheck[i][j] = 0;
-    CheckAppearNumber();
-    UpProcess();
     cout << "The Matrix at first: " << endl;
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j ++){
@@ -99,6 +97,8 @@ int main() {
         }
         cout << endl;
     }
+    CheckAppearNumber();
+    UpProcess();
     cout << "The Matrix after go up: " << endl;
     show();
     return 0;
