@@ -4,7 +4,7 @@ using namespace std;
 
 int board[4][4] = {{0, 2, 0, 4},
                    {2, 4, 0, 8},
-                   {0, 0, 2, 4},
+                   {2, 0, 2, 4},
                    {2, 0, 4, 8}};
 int boardcheck[4][4];
 
@@ -19,7 +19,7 @@ bool CheckUp(int i, int j){
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0) ||
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-        (boardcheck[i-3][j] == 0 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0)) return true;
+        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0)) return true;
     return false;
 }
 
@@ -30,7 +30,7 @@ bool CheckSimilarUp(int i, int j){
 }
 
 void PushAllElementOnTop(int i, int j){
-    if ((i == 0) && (CheckUp(3, j)))return;
+    if ((i == 0) || (CheckUp(3, j)))return;
     else
     {
         if (boardcheck[i][j] == 0) return PushAllElementOnTop(i-1, j);
