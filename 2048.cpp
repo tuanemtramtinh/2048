@@ -2,10 +2,10 @@
 
 using namespace std;
 
-int board[4][4] = {{0, 2, 0, 4},
-                   {2, 4, 0, 8},
-                   {2, 0, 2, 4},
-                   {2, 0, 4, 8}};
+int board[4][4] = {{0, 32, 64, 4},
+                   {0, 8, 16, 4},
+                   {0, 2, 8, 2},
+                   {0, 0, 8, 2}};
 int boardcheck[4][4];
 
 void CheckAppearNumber(){
@@ -18,8 +18,7 @@ bool CheckUp(int i, int j){
     if ((boardcheck[i][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-3][j] == 1) ||
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0) ||
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0)) return true;
+        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0)) return true;
     return false;
 }
 
@@ -60,24 +59,20 @@ void UpProcess(){
     for (int j = 0; j < 4; j++) {
         PushAllElementOnTop(3, j);
     }
-    /*for(int j = 0; j < 4; j++){
-        int i = 3;
-        while((CheckSimilarUp(3,j) == false)) {
-            if (board[i][j] == board[i - 1][j]) {
-                board[i - 1][j] += board[i][j];
-                board[i][j] = 0;
-                boardcheck[i][j] = 0;
-            }
-            i--;
-            if (i == 0){
-                PushAllElementOnTop(3,j);
-                i = 3;
+    for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < 4; i++){
+            if (board[i][j] == board[i+1][j]){
+                board[i][j] += board[i+1][j];
+                board[i+1][j] = 0;
+                boardcheck[i+1][j] = 0;
+                i++;
             }
         }
-    }*/
+    }
+    for (int j = 0; j < 4; j++) {
+        PushAllElementOnTop(3, j);
+    }
 }
-
-
 
 void show(){
     for(int i = 0; i < 4; i++){
@@ -86,6 +81,7 @@ void show(){
         cout << endl;
     }
 }
+
 int main() {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
