@@ -9,19 +9,14 @@ int board[4][4] = { {0, 0, 0, 0},
                    {0, 0, 0, 0},
                    {0, 0, 0, 0} };
 int boardcheck[4][4];
-bool GameOver() {
+bool GameOverCheck() {
     int count = 0;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (boardcheck[i][j] == 1) count++;
+            if (board[i][j] != 0) count++;
         }
     }
     if (count == 16) return true;
-    return false;
-}
-
-bool AnnouceOver() {
-    if (GameOver() == true) return true;
     return false;
 }
 
@@ -280,10 +275,17 @@ void show() {
             cout << board[i][j] << " ";
         cout << endl;
     }
+    bool check = false;
+    check = GameOverCheck();
+    if (check == true) {
+        cout << "GAME OVER!!!";
+        exit(0);
+    }
 }
 
 int main() {
     char key;
+    bool check = false;
     srand(time(NULL));
     GenerateRandomNumInArray();
     show();
@@ -302,40 +304,24 @@ int main() {
             UpProcess();
             GenerateRandomNumInArray();
             show();
-            if (AnnouceOver()) {
-                cout << "GAME OVER!!!";
-                break;
-            }
         }
         if (key == 's') {
             CheckAppearNumber();
             DownProcess();
             GenerateRandomNumInArray();
             show();
-            if (AnnouceOver()) {
-                cout << "GAME OVER!!!";
-                break;
-            }
         }
         if (key == 'a') {
             CheckAppearNumber();
             LeftProcess();
             GenerateRandomNumInArray();
             show();
-            if (AnnouceOver()) {
-                cout << "GAME OVER!!!";
-                break;
-            }
         }
         if (key == 'd') {
             CheckAppearNumber();
             RightProcess();
             GenerateRandomNumInArray();
             show();
-            if (AnnouceOver()) {
-                cout << "GAME OVER!!!";
-                break;
-            }
         }
     }
     return 0;
