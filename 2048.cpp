@@ -1,11 +1,8 @@
 #include <iostream>
-
+#include <cstdio>
 using namespace std;
 
-int board[4][4] = {{0, 32, 64, 4},
-                   {0, 8, 16, 4},
-                   {0, 2, 8, 2},
-                   {0, 0, 8, 2}};
+int board[4][4];
 int boardcheck[4][4];
 
 void CheckAppearNumber(){
@@ -20,12 +17,6 @@ bool CheckUp(int i, int j){
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
         (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0)) return true;
     return false;
-}
-
-bool CheckSimilarUp(int i, int j){
-    for(int i = 3; i>=0; i--)
-        if (board[i][j] == board[i-1][j] && board[i][j] != 0) return false;
-    return true;
 }
 
 void PushAllElementOnTop(int i, int j){
@@ -83,19 +74,16 @@ void show(){
 }
 
 int main() {
+    freopen("2048.inp", "r", stdin);
+    freopen("2048.out", "w", stdout);
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
             boardcheck[i][j] = 0;
-    cout << "The Matrix at first: " << endl;
-    for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j ++){
-            cout << board[i][j] << " ";
-        }
-        cout << endl;
-    }
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j ++)
+                cin >> board[i][j];
     CheckAppearNumber();
     UpProcess();
-    cout << "The Matrix after go up: " << endl;
     show();
     return 0;
 }
