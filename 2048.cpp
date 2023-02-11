@@ -1,47 +1,83 @@
 #include <iostream>
 #include <cstdio>
+#include <conio.h>
+#include <stdio.h>
 using namespace std;
- 
-int board[4][4] = {{4, 0, 0, 0},
-                   {0, 2, 2, 4},
-                   {4, 4, 0, 0},
-                   {2, 0, 2, 0}};
-int boardcheck[4][4];
 
-void CheckAppearNumber(){
-    for(int i = 0; i < 4; i++)
-        for(int j = 0; j < 4; j++)
+int board[4][4] = { {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0},
+                   {0, 0, 0, 0} };
+int boardcheck[4][4];
+bool GameOver() {
+    int count = 0;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (boardcheck[i][j] == 1) count++;
+        }
+    }
+    if (count == 16) return true;
+    return false;
+}
+
+bool AnnouceOver() {
+    if (GameOver() == true) return true;
+    return false;
+}
+
+void CheckAppearNumber() {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
             if (board[i][j] != 0) boardcheck[i][j] = 1;
+}
+
+void GenerateRandomNumInArray() {
+    bool check = true;
+    int x = 0, y = 0;
+    while (check) {
+        int i = rand() % 4;
+        int j = rand() % 4;
+        if (board[i][j] == 0 && boardcheck[i][j] == 0) {
+            check = false;
+            x = i;
+            y = j;
+        }
+    }
+    if (check == false) {
+        int num = rand() % 100 + 1;
+        if (num >= 0 && num <= 90) board[x][y] = 2;
+        if (num > 90 && num <= 100) board[x][y] = 4;
+    }
 }
 
 //Hàm đẩy các phần tử lên trên----------------------------------------------------------------------------------------------------
 
-bool CheckUp(int i, int j){
-    if ((boardcheck[i][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-3][j] == 1) ||
-        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 1 && boardcheck[i][j] == 0) ||
-        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 1 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0) ||
-        (boardcheck[i-3][j] == 1 && boardcheck[i-2][j] == 0 && boardcheck[i-1][j] == 0 && boardcheck[i][j] == 0)) return true;
+bool CheckUp(int i, int j) {
+    if ((boardcheck[i][j] == 1 && boardcheck[i - 1][j] == 1 && boardcheck[i - 2][j] == 1 && boardcheck[i - 3][j] == 1) ||
+        (boardcheck[i - 3][j] == 1 && boardcheck[i - 2][j] == 1 && boardcheck[i - 1][j] == 1 && boardcheck[i][j] == 0) ||
+        (boardcheck[i - 3][j] == 1 && boardcheck[i - 2][j] == 1 && boardcheck[i - 1][j] == 0 && boardcheck[i][j] == 0) ||
+        (boardcheck[i - 3][j] == 1 && boardcheck[i - 2][j] == 0 && boardcheck[i - 1][j] == 0 && boardcheck[i][j] == 0)) return true;
     return false;
 }
 
-void PushAllElementOnTop(int i, int j){
+void PushAllElementOnTop(int i, int j) {
     if ((i == 0) || (CheckUp(3, j)))return;
     else
     {
-        if (boardcheck[i][j] == 0) return PushAllElementOnTop(i-1, j);
-        if (boardcheck[i][j] != 0){
-            for(int k = i; k >= 1; k--){
-                if (boardcheck[k-1][j] == 0){
-                    board[k-1][j] = board[k][j];
-                    boardcheck[k-1][j] = 1;
+        if (boardcheck[i][j] == 0) return PushAllElementOnTop(i - 1, j);
+        if (boardcheck[i][j] != 0) {
+            for (int k = i; k >= 1; k--) {
+                if (boardcheck[k - 1][j] == 0) {
+                    board[k - 1][j] = board[k][j];
+                    boardcheck[k - 1][j] = 1;
                     board[k][j] = 0;
                     boardcheck[k][j] = 0;
                 }
-                else{
-                    PushAllElementOnTop(k-1, j);
-                    if (boardcheck[k-1][j] == 0){
-                        board[k-1][j] = board[k][j];
-                        boardcheck[k-1][j] = 1;
+                else {
+                    PushAllElementOnTop(k - 1, j);
+                    if (boardcheck[k - 1][j] == 0) {
+                        board[k - 1][j] = board[k][j];
+                        boardcheck[k - 1][j] = 1;
                         board[k][j] = 0;
                         boardcheck[k][j] = 0;
                     }
@@ -51,16 +87,16 @@ void PushAllElementOnTop(int i, int j){
     }
 }
 
-void UpProcess(){
+void UpProcess() {
     for (int j = 0; j < 4; j++) {
         PushAllElementOnTop(3, j);
     }
     for (int j = 0; j < 4; j++) {
-        for (int i = 0; i < 4; i++){
-            if ((board[i][j] == board[i+1][j]) && (board[i][j] != 0)){
-                board[i][j] += board[i+1][j];
-                board[i+1][j] = 0;
-                boardcheck[i+1][j] = 0;
+        for (int i = 0; i < 4; i++) {
+            if ((board[i][j] == board[i + 1][j]) && (board[i][j] != 0)) {
+                board[i][j] += board[i + 1][j];
+                board[i + 1][j] = 0;
+                boardcheck[i + 1][j] = 0;
                 i++;
             }
         }
@@ -163,7 +199,7 @@ void PushAllElementLeft(int i, int j) {
 }
 
 void LeftProcess() {
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++) {
         PushAllElementLeft(i, 3);
     }
     for (int i = 0; i < 4; i++) {
@@ -237,45 +273,70 @@ void RightProcess() {
 }
 
 //Hàm in ra---------------------------------------------------
-void show(){
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++)
+void show() {
+    system("cls");
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++)
             cout << board[i][j] << " ";
         cout << endl;
     }
 }
 
 int main() {
-    /*freopen("2048.inp", "r", stdin);
-    freopen("2048.out", "w", stdout);*/
+    char key;
+    srand(time(NULL));
+    GenerateRandomNumInArray();
+    show();
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
             boardcheck[i][j] = 0;
-    /*for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j ++)
-                cin >> board[i][j];*/
     CheckAppearNumber();
-    char key;
-    cin >> key;
-    if (key == 'W'){
-        UpProcess();
-        show();
+    while (true) {
+        key = getch();
+        if (key == 'q'){
+            cout << "Quit Success";
+            break;
+        }
+        if (key == 'w'){
+            CheckAppearNumber();
+            UpProcess();
+            GenerateRandomNumInArray();
+            show();
+            if (AnnouceOver()) {
+                cout << "GAME OVER!!!";
+                break;
+            }
+        }
+        if (key == 's') {
+            CheckAppearNumber();
+            DownProcess();
+            GenerateRandomNumInArray();
+            show();
+            if (AnnouceOver()) {
+                cout << "GAME OVER!!!";
+                break;
+            }
+        }
+        if (key == 'a') {
+            CheckAppearNumber();
+            LeftProcess();
+            GenerateRandomNumInArray();
+            show();
+            if (AnnouceOver()) {
+                cout << "GAME OVER!!!";
+                break;
+            }
+        }
+        if (key == 'd') {
+            CheckAppearNumber();
+            RightProcess();
+            GenerateRandomNumInArray();
+            show();
+            if (AnnouceOver()) {
+                cout << "GAME OVER!!!";
+                break;
+            }
+        }
     }
-    if (key == 'S'){
-        DownProcess();
-        show();
-    }
-    if (key == 'D'){
-        RightProcess();
-        show();
-    }
-    if (key == 'A'){
-        LeftProcess();
-        show();
-    }
-    //UpProcess();
-    //DownProcess();
-    //LeftProcess();
-    
     return 0;
 }
